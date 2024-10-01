@@ -1,22 +1,24 @@
 import dayjs from "dayjs";
-import { forwardRef, LegacyRef, Ref, useRef } from "react";
+import { forwardRef, LegacyRef, Ref, useRef, useContext } from "react";
+import { TodoDispatchContext } from "../App";
+import { TodoDispatchContextType } from "../App";
 
 export const Editor = forwardRef(
   (
     {
       value,
       onChangeValue,
-      handleAddTodo,
       onKeyDown,
     }: {
       value: string;
       onChangeValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
-      handleAddTodo: () => void;
       onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     },
     ref: Ref<HTMLInputElement>
   ) => {
     // const refInput = useRef(null);
+    const { handleAddTodo } = useContext(TodoDispatchContext) as TodoDispatchContextType;
+    // console.dir(data)
     return (
       <div className="flex mb-[14px]">
         <input

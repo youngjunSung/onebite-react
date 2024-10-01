@@ -1,4 +1,13 @@
-import { useState, useEffect, useRef, LegacyRef, useReducer } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  LegacyRef,
+  useMemo,
+  useReducer,
+  useCallback,
+  createContext,
+} from "react";
 import dayjs from "dayjs";
 import { useInput } from "./hooks/useInput";
 import { Header } from "./components/Header";
@@ -28,7 +37,10 @@ import { Exam } from "./components/Exam";
 // type Action = {type: string, data: TodoType} | {type: string, targetId: number};
 
 // type 필드를 고정된 문자열 값(리터럴 타입)으로 설정해야 한다
-type Action = {type: "ADD", data: TodoType} | {type: "UPDATE", targetId: number} | {type: "DELETE", targetId: number};
+type Action =
+  | { type: "ADD"; data: TodoType }
+  | { type: "UPDATE"; targetId: number }
+  | { type: "DELETE"; targetId: number };
 
 function reducer(state: TodoType[], action: Action) {
   switch (action.type) {
@@ -44,10 +56,20 @@ function reducer(state: TodoType[], action: Action) {
       return state;
   }
 }
+export interface TodoDispatchContextType {
+  handleAddTodo: () => void;
+  handleUpdate: (id: number) => void;
+  handleDelete: (id: number) => void;
+}
+export const TodoStateContext = createContext<TodoType[] | null>(
+  null
+);
+export const TodoDispatchContext =
+  createContext<TodoDispatchContextType | null>(null);
 
 function App() {
   // const [todoList, setTodoList] = useState<TodoType[]>([]);
-  const [todoList, dispatch] = useReducer(reducer, [])
+  const [todoList, dispatch] = useReducer(reducer, []);
   const [value, setValue, onChangeValue] = useInput("");
   const refId = useRef(0);
   const refInputAdd = useRef<HTMLInputElement>(null);
@@ -82,7 +104,7 @@ function App() {
       handleAddTodo();
     }
   };
-  const handleUpdate = (targetId: number) => {
+  const handleUpdate = useCallback((targetId: number) => {
     // setTodoList(
     //   todoList.map((todo) =>
     //     todo.id === targetId ? { ...todo, isDone: !todo.isDone } : todo
@@ -91,29 +113,38 @@ function App() {
     dispatch({
       type: "UPDATE",
       targetId: targetId,
-    })
-  };
-  const handleDelete = (targetId: number) => {
+    });
+  }, []);
+  const handleDelete = useCallback((targetId: number) => {
     // setTodoList(todoList.filter((todo) => todo.id !== targetId));
     dispatch({
       type: "DELETE",
       targetId: targetId,
-    })
-  };
+    });
+  }, []);
+
+  const memoizedDispatch = useMemo(() => {
+    return { handleAddTodo, handleUpdate, handleDelete }
+  }, [])
 
   return (
     <>
       <div className="p-[20px]">
         <Exam />
         <Header />
-        <Editor
-          value={value}
-          onChangeValue={onChangeValue}
-          onKeyDown={onKeyDown}
-          handleAddTodo={handleAddTodo}
-          ref={refInputAdd}
-        />
-        <List todoList={todoList} handleUpdate={handleUpdate} handleDelete={handleDelete} />
+        <TodoStateContext.Provider value={todoList}>
+          <TodoDispatchContext.Provider
+            value={memoizedDispatch}
+          >
+            <Editor
+              value={value}
+              onChangeValue={onChangeValue}
+              onKeyDown={onKeyDown}
+              ref={refInputAdd}
+            />
+            <List />
+          </TodoDispatchContext.Provider>
+        </TodoStateContext.Provider>
       </div>
     </>
   );

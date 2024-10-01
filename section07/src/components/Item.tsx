@@ -1,11 +1,17 @@
 import { TodoType } from "../typing/types";
+import { memo, useContext } from "react";
+import { TodoDispatchContext } from "../App";
+import { TodoDispatchContextType } from "../App";
 
-type ExtendTodoType = {
-  handleUpdate: (targetId: number) => void,
-  handleDelete: (targetId: number) => void,
-} & TodoType;
+// type ExtendTodoType = {
+//   handleUpdate: (targetId: number) => void,
+//   handleDelete: (targetId: number) => void,
+// } & TodoType;
 
-export const Item = ({ id, isDone, title, date, handleUpdate, handleDelete }: ExtendTodoType) => {
+export const Item = memo(({ id, isDone, title, date }: TodoType) => {
+  const { handleUpdate, handleDelete } = useContext(
+    TodoDispatchContext
+  ) as TodoDispatchContextType;
   return (
     <li key={id} className="my-[10px] flex items-center">
       <div className="flex items-center">
@@ -26,4 +32,5 @@ export const Item = ({ id, isDone, title, date, handleUpdate, handleDelete }: Ex
       </div>
     </li>
   );
-};
+});
+Item.displayName = 'Item';
