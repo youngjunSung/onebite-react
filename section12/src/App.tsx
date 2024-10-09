@@ -1,53 +1,53 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
+import Edit from "./pages/Edit";
 import Notfound from "./pages/Notfound";
-
-// import emotion1 from "./assets/emotion1.png";
-// import emotion2 from "./assets/emotion2.png";
-// import emotion3 from "./assets/emotion3.png";
-// import emotion4 from "./assets/emotion4.png";
-// import emotion5 from "./assets/emotion5.png";
-
+import Button from "./components/Button";
+import Header from "./components/Header";
 import { getEmotions } from "./utils/getEmotions";
 
-// "/" : home
-// "/new" : 새로운 일기 생성 페이지
-// "/diary" : 일기 상세 조회 페이지
+const mockData = [
+  {
+    id: 1,
+    createdDate: new Date().getDate(),
+    emotionId: 1,
+    content: "1번 일기내용",
+  },
+  {
+    id: 2,
+    createdDate: new Date().getDate(),
+    emotionId: 2,
+    content: "2번 일기내용",
+  },
+];
+function reducer(state, action) {
+  return state;
+}
+
 function App() {
-  const nav = useNavigate();
-  const handleClickButton = () => {
-    nav("/new");
-  };
+  const [state, dispatch] = useReducer(reducer, mockData);
 
   return (
-    <>
-      <div className="flex">
-        <img src="/emotion1.png" alt="" />
-      </div>
-      <div className="flex">
-        <img src={getEmotions(1)} alt="" />
-        <img src={getEmotions(2)} alt="" />
-        <img src={getEmotions(3)} alt="" />
-        <img src={getEmotions(4)} alt="" />
-        <img src={getEmotions(5)} alt="" />
-      </div>
-      <div className="border border-b-amber-500">
-        <Link to={"/"}>home</Link>
-        <Link to={"/new"}>new</Link>
-        <Link to={"/diary"}>diary</Link>
-      </div>
-      <button onClick={handleClickButton}>new 이동</button>
+    <div className="max-w-[600px] w-full mx-auto bg-white flex-1 shadow-[0px_0px_20px_#64646433]">
+      <Header
+        text="헤더"
+        leftChild={<Button text="텍스트" type="default" />}
+        rightChild={
+          <Button text="텍스트" type="default" onClick={() => alert()} />
+        }
+      />
       <Routes>
         {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
         <Route path="/" element={<Home />} />
         <Route path="/new" element={<New />} />
         <Route path="/diary/:diary" element={<Diary />} />
+        <Route path="/edit/:edit" element={<Edit />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

@@ -7,7 +7,16 @@
     <title>Vite + React + TS</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root" class="min-h-[calc(var(--vh,1vh)*100)] flex flex-col bg-[#f6f6f6]"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      const getVvh = () => {
+        document.documentElement.style.setProperty('--vh', `${(visualViewport.height * 0.01).toFixed(2)}px`);
+      }
+      visualViewport.addEventListener('resize', getVvh);
+      window.addEventListener('load', () => {
+        getVvh();
+      });
+    </script>
   </body>
 </html>

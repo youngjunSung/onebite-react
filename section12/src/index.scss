@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .center {
+    @apply flex items-center justify-center;
+  }
+}
+
 body {
   font-family: 'pretendard';
 }
