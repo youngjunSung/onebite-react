@@ -12,13 +12,13 @@ import { getEmotions } from "./utils/getEmotions";
 const mockData = [
   {
     id: 1,
-    createdDate: new Date().getDate(),
+    createdDate: new Date().toLocaleString("en-US").split(", ")[0],
     emotionId: 1,
     content: "1번 일기내용",
   },
   {
     id: 2,
-    createdDate: new Date().getDate(),
+    createdDate: new Date().toLocaleString("en-US").split(", ")[0],
     emotionId: 2,
     content: "2번 일기내용",
   },
@@ -39,6 +39,18 @@ function App() {
           <Button text="텍스트" type="default" onClick={() => alert()} />
         }
       />
+      <div className="p-[12px]">
+        <ul>
+          {mockData.map((e) => {
+            return (
+              <li>
+                <p>{e.createdDate}</p>
+                <p>{e.content}</p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
       <Routes>
         {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
         <Route path="/" element={<Home />} />
