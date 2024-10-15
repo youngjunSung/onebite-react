@@ -1,4 +1,4 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useRef } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
@@ -8,6 +8,7 @@ import Notfound from "./pages/Notfound";
 import Button from "./components/Button";
 import Header from "./components/Header";
 import { getEmotions } from "./utils/getEmotions";
+import { DiaryType } from "./typing/types";
 
 const mockData = [
   {
@@ -24,11 +25,28 @@ const mockData = [
   },
 ];
 function reducer(state, action) {
+  switch (action.type) {
+    case "CREATE":
+      return [...state, action.data];
+  }
   return state;
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, mockData);
+  const [state, dispatch] = useReducer(reducer, []);
+  const refId = useRef(3);
+
+  const onCreate = (createdDate, emotionId, content) => {
+    dispatch({
+      type: "CREATE",
+      data: {
+        id: refId.current++,
+        createdDate: createdDate,
+        emotionId: emotionId,
+        content: content,
+      },
+    });
+  };
 
   return (
     <div className="max-w-[600px] w-full mx-auto bg-white flex-1 shadow-[0px_0px_20px_#64646433]">
@@ -39,11 +57,16 @@ function App() {
           <Button text="텍스트" type="default" onClick={() => alert()} />
         }
       />
+      <div>
+        <button onClick={() => onCreate(new Date(), 1, "new text")}>
+          추가
+        </button>
+      </div>
       <div className="p-[12px]">
         <ul>
-          {mockData.map((e) => {
+          {state.map((e: DiaryType, idx: string) => {
             return (
-              <li>
+              <li key={idx}>
                 <p>{e.createdDate}</p>
                 <p>{e.content}</p>
               </li>
