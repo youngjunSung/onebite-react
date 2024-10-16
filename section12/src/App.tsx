@@ -24,23 +24,42 @@ const mockData = [
     content: "2번 일기내용",
   },
 ];
-function reducer(state, action) {
+function reducer(state: DiaryType[], action) {
   switch (action.type) {
     case "CREATE":
       return [...state, action.data];
+    case "MODIFY":
+      return state.map((diary) => {
+        if (diary.id === action.data.id) {
+          return action.data;
+        } else {
+          return diary;
+        }
+      });
   }
   return state;
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, []);
-  const refId = useRef(3);
+  const [diaryList, dispatch] = useReducer(reducer, []);
+  const refId = useRef(1);
 
   const onCreate = (createdDate, emotionId, content) => {
     dispatch({
       type: "CREATE",
       data: {
         id: refId.current++,
+        createdDate: createdDate,
+        emotionId: emotionId,
+        content: content,
+      },
+    });
+  };
+  const onModify = (id, createdDate, emotionId, content) => {
+    dispatch({
+      type: "MODIFY",
+      data: {
+        id: id,
         createdDate: createdDate,
         emotionId: emotionId,
         content: content,
@@ -57,18 +76,39 @@ function App() {
           <Button text="텍스트" type="default" onClick={() => alert()} />
         }
       />
-      <div>
-        <button onClick={() => onCreate(new Date(), 1, "new text")}>
+      <div className="p-[12px] flex gap-[10px]">
+        <button
+          onClick={() =>
+            onCreate(
+              new Date().toLocaleString("en-US").split(", ")[0],
+              1,
+              "new text"
+            )
+          }
+        >
           추가
         </button>
+        <button
+          onClick={() =>
+            onModify(
+              2,
+              new Date().toLocaleString("en-US").split(", ")[0],
+              1,
+              "sdfsdfsdfsd text"
+            )
+          }
+        >
+          수정
+        </button>
+        <button>삭제</button>
       </div>
       <div className="p-[12px]">
         <ul>
-          {state.map((e: DiaryType, idx: string) => {
+          {diaryList.map((diary: DiaryType, idx: number) => {
             return (
               <li key={idx}>
-                <p>{e.createdDate}</p>
-                <p>{e.content}</p>
+                <p>{diary.createdDate}</p>
+                <p>{diary.content}</p>
               </li>
             );
           })}
