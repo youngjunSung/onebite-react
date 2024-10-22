@@ -24,27 +24,57 @@ const mockData = [
     content: "2번 일기내용",
   },
 ];
-function reducer(state: DiaryType[], action) {
+type Action =
+  | {
+      type: "CREATE";
+      data: {
+        id: number;
+        createdDate: string;
+        emotionId: number;
+        content: string;
+      };
+    }
+  | {
+      type: "MODIFY";
+      data: {
+        id: number;
+        createdDate: string;
+        emotionId: number;
+        content: string;
+      };
+    }
+  | {
+      type: "DELETE";
+      data: { id: number };
+    };
+function reducer(diaryList: DiaryType[], action: Action) {
   switch (action.type) {
     case "CREATE":
-      return [...state, action.data];
+      return [...diaryList, action.data];
     case "MODIFY":
-      return state.map((diary) => {
+      return diaryList.map((diary) => {
         if (diary.id === action.data.id) {
           return action.data;
         } else {
           return diary;
         }
       });
+    case "DELETE":
+      return diaryList.filter((diary) => diary.id !== action.data.id);
+    default:
+      return diaryList;
   }
-  return state;
 }
 
 function App() {
   const [diaryList, dispatch] = useReducer(reducer, []);
   const refId = useRef(1);
 
-  const onCreate = (createdDate, emotionId, content) => {
+  const onCreate = (
+    createdDate: string,
+    emotionId: number,
+    content: string
+  ) => {
     dispatch({
       type: "CREATE",
       data: {
@@ -55,7 +85,12 @@ function App() {
       },
     });
   };
-  const onModify = (id, createdDate, emotionId, content) => {
+  const onModify = (
+    id: number,
+    createdDate: string,
+    emotionId: number,
+    content: string
+  ) => {
     dispatch({
       type: "MODIFY",
       data: {
@@ -63,6 +98,15 @@ function App() {
         createdDate: createdDate,
         emotionId: emotionId,
         content: content,
+      },
+    });
+  };
+
+  const onDelete = (id: number) => {
+    dispatch({
+      type: "DELETE",
+      data: {
+        id: id,
       },
     });
   };
@@ -76,6 +120,9 @@ function App() {
           <Button text="텍스트" type="default" onClick={() => alert()} />
         }
       />
+      <div>
+        
+      </div>
       <div className="p-[12px] flex gap-[10px]">
         <button
           onClick={() =>
@@ -100,7 +147,7 @@ function App() {
         >
           수정
         </button>
-        <button>삭제</button>
+        <button onClick={() => onDelete(2)}>삭제</button>
       </div>
       <div className="p-[12px]">
         <ul>
