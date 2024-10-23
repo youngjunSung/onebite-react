@@ -113,16 +113,14 @@ function App() {
 
   return (
     <div className="max-w-[600px] w-full mx-auto bg-white flex-1 shadow-[0px_0px_20px_#64646433]">
-      <Header
-        text="헤더"
-        leftChild={<Button text="텍스트" type="default" />}
-        rightChild={
-          <Button text="텍스트" type="default" onClick={() => alert()} />
-        }
-      />
-      <div>
-        
-      </div>
+      <Routes>
+        {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
+        <Route path="/" element={<Home />} />
+        <Route path="/new" element={<New />} />
+        <Route path="/diary/:diary" element={<Diary />} />
+        <Route path="/edit/:edit" element={<Edit />} />
+        <Route path="*" element={<Notfound />} />
+      </Routes>
       <div className="p-[12px] flex gap-[10px]">
         <button
           onClick={() =>
@@ -161,14 +159,6 @@ function App() {
           })}
         </ul>
       </div>
-      <Routes>
-        {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
-        <Route path="/" element={<Home />} />
-        <Route path="/new" element={<New />} />
-        <Route path="/diary/:diary" element={<Diary />} />
-        <Route path="/edit/:edit" element={<Edit />} />
-        <Route path="*" element={<Notfound />} />
-      </Routes>
     </div>
   );
 }
