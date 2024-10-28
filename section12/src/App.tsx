@@ -45,22 +45,18 @@ type Action =
     }
   | {
       type: "DELETE";
-      data: { id: number };
+      id: number;
     };
 function reducer(diaryList: DiaryType[], action: Action) {
   switch (action.type) {
     case "CREATE":
       return [...diaryList, action.data];
     case "MODIFY":
-      return diaryList.map((diary) => {
-        if (diary.id === action.data.id) {
-          return action.data;
-        } else {
-          return diary;
-        }
-      });
+      return diaryList.map((diary) =>
+        diary.id === action.data.id ? action.data : diary
+      );
     case "DELETE":
-      return diaryList.filter((diary) => diary.id !== action.data.id);
+      return diaryList.filter((diary) => diary.id !== action.id);
     default:
       return diaryList;
   }
@@ -79,9 +75,9 @@ function App() {
       type: "CREATE",
       data: {
         id: refId.current++,
-        createdDate: createdDate,
-        emotionId: emotionId,
-        content: content,
+        createdDate,
+        emotionId,
+        content,
       },
     });
   };
@@ -94,10 +90,10 @@ function App() {
     dispatch({
       type: "MODIFY",
       data: {
-        id: id,
-        createdDate: createdDate,
-        emotionId: emotionId,
-        content: content,
+        id,
+        createdDate,
+        emotionId,
+        content,
       },
     });
   };
@@ -105,9 +101,7 @@ function App() {
   const onDelete = (id: number) => {
     dispatch({
       type: "DELETE",
-      data: {
-        id: id,
-      },
+      id,
     });
   };
 
