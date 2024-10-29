@@ -1,4 +1,4 @@
-import { useState, useReducer, useRef } from "react";
+import { useState, useReducer, useRef, createContext } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
@@ -8,7 +8,7 @@ import Notfound from "./pages/Notfound";
 import Button from "./components/Button";
 import Header from "./components/Header";
 import { getEmotions } from "./utils/getEmotions";
-import { DiaryType } from "./typing/types";
+import { DiaryType, DiaryDispatchContextType } from "./typing/types";
 
 const mockData = [
   {
@@ -61,7 +61,9 @@ function reducer(diaryList: DiaryType[], action: Action) {
       return diaryList;
   }
 }
-
+export const DiaryStateContext = createContext<DiaryType[] | null>(null);
+export const DiaryDispatchContext =
+  createContext<DiaryDispatchContextType | null>(null);
 function App() {
   const [diaryList, dispatch] = useReducer(reducer, []);
   const refId = useRef(1);
@@ -107,14 +109,18 @@ function App() {
 
   return (
     <div className="max-w-[600px] w-full mx-auto bg-white flex-1 shadow-[0px_0px_20px_#64646433]">
-      <Routes>
-        {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
-        <Route path="/" element={<Home />} />
-        <Route path="/new" element={<New />} />
-        <Route path="/diary/:diary" element={<Diary />} />
-        <Route path="/edit/:edit" element={<Edit />} />
-        <Route path="*" element={<Notfound />} />
-      </Routes>
+      <DiaryStateContext.Provider value={diaryList}>
+        <DiaryDispatchContext.Provider value={{ onCreate, onModify, onDelete }}>
+          <Routes>
+            {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
+            <Route path="/" element={<Home />} />
+            <Route path="/new" element={<New />} />
+            <Route path="/diary/:diary" element={<Diary />} />
+            <Route path="/edit/:edit" element={<Edit />} />
+            <Route path="*" element={<Notfound />} />
+          </Routes>
+        </DiaryDispatchContext.Provider>
+      </DiaryStateContext.Provider>
       <div className="p-[12px] flex gap-[10px]">
         <button
           onClick={() =>

@@ -1,4 +1,7 @@
-const Button = ({ text, type, className, onClick }: { text: string, type: string, className?: string, onClick?: () => void }) => {
+import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
+
+const Button = ({ text, type, className, onClick }: { text: ReactNode, type: string, className?: string, onClick?: () => void }) => {
 	const getType = (type: string) => {
 		switch (type) {
 			case 'default':
@@ -15,7 +18,7 @@ const Button = ({ text, type, className, onClick }: { text: string, type: string
     <button
       type="button"
       onClick={onClick}
-      className={`cursor-pointer ${getType(type)} rounded-[5px] text-[14px] center w-full min-h-[38px] px-[10px] py-[4px] ${className}`}
+      className={twMerge(`cursor-pointer ${getType(type)} rounded-[5px] text-[14px] center w-full min-h-[38px] px-[10px] py-[4px] ${className}`)}
     >
       {text}
     </button>
