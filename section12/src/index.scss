@@ -10,6 +10,8 @@
 
 body {
   font-family: 'pretendard';
+  word-break: keep-all;
+  word-wrap: break-word;
 }
 
 $fonts: (pretendard);
