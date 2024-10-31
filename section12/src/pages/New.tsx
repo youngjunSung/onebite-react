@@ -2,10 +2,12 @@ import Header from "../components/Header";
 import Button from "../components/Button";
 import { getEmotions } from "../utils/getEmotions";
 import { KeyboardBackspace } from "@mui/icons-material";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useRef, useMemo, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { DiaryDispatchContextType } from "../typing/types";
 import { DiaryDispatchContext } from "../App";
+import EmotionRadio from "../components/EmotionRadio";
+import dayjs from "dayjs";
 
 const New = () => {
   const nav = useNavigate();
@@ -15,8 +17,10 @@ const New = () => {
   const [date, setDate] = useState<string>("");
   const [emoId, setEmoId] = useState<number>(0);
   const [content, setContent] = useState<string>("");
+  const refInputDate = useRef<HTMLInputElement>(null);
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
+    if (refInputDate.current) refInputDate.current.value = e.target.value;
   };
   const onChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmoId(Number(e.target.value));
@@ -28,6 +32,9 @@ const New = () => {
     onCreate(date, emoId, content);
     nav("/");
   };
+  useEffect(() => {
+    setDate(dayjs().format("YYYY-MM-DD"));
+  }, []);
   return (
     <>
       <Header
@@ -44,7 +51,8 @@ const New = () => {
           <div>
             <input
               type="date"
-              value="2024-10-30"
+              ref={refInputDate}
+              value={date}
               className="text-[14px] bg-[#ececec] py-[4px] px-[12px] rounded-[6px]"
               onChange={onChangeDate}
             />
@@ -54,115 +62,41 @@ const New = () => {
           <h2 className="text-[14px] font-bold mb-[10px]">감정 상태</h2>
           <div>
             <ul className="grid grid-cols-[repeat(auto-fit,minmax(60px,1fr))] auto-rows-auto gap-[4px]">
-              <li className="flex flex-col">
-                <input
-                  id="radio01"
-                  name="radioEmotion"
-                  type="radio"
-                  value={1}
-                  onChange={onChangeRadio}
-                  className="sr-only peer"
-                />
-                <label
-                  htmlFor="radio01"
-                  className="flex-col flex items-center bg-[#ececec] p-[14px] rounded-[6px] flex-1 peer-checked:bg-[#64c964] peer-checked:text-white"
-                >
-                  <img
-                    src={getEmotions(1)}
-                    alt=""
-                    className="w-[24px] mb-[6px]"
-                  />
-                  <p className="text-[12px] font-[500] text-center">
-                    완전 좋음
-                  </p>
-                </label>
-              </li>
-              <li className="flex flex-col">
-                <input
-                  id="radio02"
-                  name="radioEmotion"
-                  type="radio"
-                  value={2}
-                  onChange={onChangeRadio}
-                  className="sr-only peer"
-                />
-                <label
-                  htmlFor="radio02"
-                  className="flex-col flex items-center bg-[#ececec] p-[14px] rounded-[6px] flex-1 peer-checked:bg-[#9dd772] peer-checked:text-white"
-                >
-                  <img
-                    src={getEmotions(2)}
-                    alt=""
-                    className="w-[24px] mb-[6px]"
-                  />
-                  <p className="text-[12px] font-[500] text-center">좋음</p>
-                </label>
-              </li>
-              <li className="flex flex-col">
-                <input
-                  id="radio03"
-                  name="radioEmotion"
-                  type="radio"
-                  value={3}
-                  onChange={onChangeRadio}
-                  className="sr-only peer"
-                />
-                <label
-                  htmlFor="radio03"
-                  className="flex-col flex items-center bg-[#ececec] p-[14px] rounded-[6px] flex-1 peer-checked:bg-[#fdce17] peer-checked:text-white"
-                >
-                  <img
-                    src={getEmotions(3)}
-                    alt=""
-                    className="w-[24px] mb-[6px]"
-                  />
-                  <p className="text-[12px] font-[500] text-center">보통</p>
-                </label>
-              </li>
-              <li className="flex flex-col">
-                <input
-                  id="radio04"
-                  name="radioEmotion"
-                  type="radio"
-                  value={4}
-                  onChange={onChangeRadio}
-                  className="sr-only peer"
-                />
-                <label
-                  htmlFor="radio04"
-                  className="flex-col flex items-center bg-[#ececec] p-[14px] rounded-[6px] flex-1 peer-checked:bg-[#fd8446] peer-checked:text-white"
-                >
-                  <img
-                    src={getEmotions(4)}
-                    alt=""
-                    className="w-[24px] mb-[6px]"
-                  />
-                  <p className="text-[12px] font-[500] text-center">별로</p>
-                </label>
-              </li>
-              <li className="flex flex-col">
-                <input
-                  id="radio05"
-                  name="radioEmotion"
-                  type="radio"
-                  value={5}
-                  onChange={onChangeRadio}
-                  className="sr-only peer"
-                />
-                <label
-                  htmlFor="radio05"
-                  className="flex-col flex items-center bg-[#ececec] p-[14px] rounded-[6px] flex-1 peer-checked:bg-[#fd565f] peer-checked:text-white"
-                >
-                  <img
-                    src={getEmotions(5)}
-                    alt=""
-                    className="w-[24px] mb-[6px]"
-                  />
-                  <p className="text-[12px] font-[500] text-center">
-                    완전 별로
-                  </p>
-                </label>
-              </li>
+              <EmotionRadio
+                inputId="radio01"
+                value={1}
+                text="완전 좋음"
+                checkedBg="#64c964"
+                onChangeDate={onChangeRadio}
+              />
+              <EmotionRadio
+                inputId="radio02"
+                value={2}
+                text="좋음"
+                checkedBg="#9dd772"
+                onChangeDate={onChangeRadio}
+              />
+              <EmotionRadio
+                inputId="radio03"
+                value={3}
+                text="보통"
+                checkedBg="#fdce17"
+                onChangeDate={onChangeRadio}
+              />
+              <EmotionRadio
+                inputId="radio04"
+                value={4}
+                text="별로"
+                checkedBg="#fd8446"
+                onChangeDate={onChangeRadio}
+              />
+              <EmotionRadio
+                inputId="radio05"
+                value={5}
+                text="완전 별로"
+                checkedBg="#fd565f"
+                onChangeDate={onChangeRadio}
+              />
             </ul>
           </div>
         </div>
@@ -176,7 +110,7 @@ const New = () => {
           ></textarea>
         </div>
         <div className="flex gap-[10px]">
-          <Button text="취소하기" />
+          <Button text="취소하기" onClick={() => nav("/")} />
           <Button text="작성완료" type="positive" onClick={onSubmit} />
         </div>
       </div>

@@ -10,7 +10,7 @@ const DiaryList = () => {
   return (
     <div className="p-[12px]">
       <div className="flex items-center mb-[20px]">
-        <select className="h-[38px] pr-[10px]">
+        <select className="h-[38px] pr-[10px] text-[12px]">
           <option value="최신순">최신순</option>
           <option value="오래된 순">오래된 순</option>
         </select>
@@ -26,6 +26,7 @@ const DiaryList = () => {
           return (
             <DiaryItem
               key={diaryItem.id}
+              id={diaryItem.id}
               createdDate={diaryItem.createdDate}
               emotionId={diaryItem.emotionId}
               content={diaryItem.content}

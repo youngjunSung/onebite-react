@@ -10,20 +10,6 @@ import Header from "./components/Header";
 import { getEmotions } from "./utils/getEmotions";
 import { DiaryType, DiaryDispatchContextType } from "./typing/types";
 
-const mockData = [
-  {
-    id: 1,
-    createdDate: new Date().toLocaleString("en-US").split(", ")[0],
-    emotionId: 1,
-    content: "1번 일기내용",
-  },
-  {
-    id: 2,
-    createdDate: new Date().toLocaleString("en-US").split(", ")[0],
-    emotionId: 2,
-    content: "2번 일기내용",
-  },
-];
 type Action =
   | {
       type: "CREATE";
@@ -121,44 +107,6 @@ function App() {
           </Routes>
         </DiaryDispatchContext.Provider>
       </DiaryStateContext.Provider>
-      <div className="p-[12px] flex gap-[10px]">
-        <button
-          onClick={() =>
-            onCreate(
-              new Date().toLocaleString("en-US").split(", ")[0],
-              1,
-              "new text"
-            )
-          }
-        >
-          추가
-        </button>
-        <button
-          onClick={() =>
-            onModify(
-              2,
-              new Date().toLocaleString("en-US").split(", ")[0],
-              1,
-              "sdfsdfsdfsd text"
-            )
-          }
-        >
-          수정
-        </button>
-        <button onClick={() => onDelete(2)}>삭제</button>
-      </div>
-      <div className="p-[12px]">
-        <ul>
-          {diaryList.map((diary: DiaryType, idx: number) => {
-            return (
-              <li key={idx}>
-                <p>{diary.createdDate}</p>
-                <p>{diary.content}</p>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
     </div>
   );
 }
