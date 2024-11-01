@@ -66,35 +66,30 @@ const New = () => {
                 inputId="radio01"
                 value={1}
                 text="완전 좋음"
-                checkedBg="#64c964"
                 onChangeDate={onChangeRadio}
               />
               <EmotionRadio
                 inputId="radio02"
                 value={2}
                 text="좋음"
-                checkedBg="#9dd772"
                 onChangeDate={onChangeRadio}
               />
               <EmotionRadio
                 inputId="radio03"
                 value={3}
                 text="보통"
-                checkedBg="#fdce17"
                 onChangeDate={onChangeRadio}
               />
               <EmotionRadio
                 inputId="radio04"
                 value={4}
                 text="별로"
-                checkedBg="#fd8446"
                 onChangeDate={onChangeRadio}
               />
               <EmotionRadio
                 inputId="radio05"
                 value={5}
                 text="완전 별로"
-                checkedBg="#fd565f"
                 onChangeDate={onChangeRadio}
               />
             </ul>

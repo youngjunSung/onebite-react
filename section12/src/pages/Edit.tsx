@@ -78,7 +78,6 @@ const Edit = () => {
                 inputId="radio01"
                 value={1}
                 text="완전 좋음"
-                checkedBg="#64c964"
                 onChangeDate={onChangeRadio}
                 isChecked={emoId === 1}
               />
@@ -86,7 +85,6 @@ const Edit = () => {
                 inputId="radio02"
                 value={2}
                 text="좋음"
-                checkedBg="#9dd772"
                 onChangeDate={onChangeRadio}
                 isChecked={emoId === 2}
               />
@@ -94,7 +92,6 @@ const Edit = () => {
                 inputId="radio03"
                 value={3}
                 text="보통"
-                checkedBg="#fdce17"
                 onChangeDate={onChangeRadio}
                 isChecked={emoId === 3}
               />
@@ -102,7 +99,6 @@ const Edit = () => {
                 inputId="radio04"
                 value={4}
                 text="별로"
-                checkedBg="#fd8446"
                 onChangeDate={onChangeRadio}
                 isChecked={emoId === 4}
               />
@@ -110,7 +106,6 @@ const Edit = () => {
                 inputId="radio05"
                 value={5}
                 text="완전 별로"
-                checkedBg="#fd565f"
                 onChangeDate={onChangeRadio}
                 isChecked={emoId === 5}
               />
