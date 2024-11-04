@@ -12,21 +12,35 @@ import dayjs from "dayjs";
 const Home = () => {
   const nav = useNavigate();
   const [date, setDate] = useState<string>("");
+  const onPrev = () => {
+    setDate(dayjs(date).subtract(1, "month").format());
+  };
+  const onNext = () => {
+    setDate(dayjs(date).add(1, "month").format());
+  };
   useEffect(() => {
-    setDate(dayjs().format("YYYY년 MM월"));
+    setDate(dayjs().format());
   }, []);
   return (
     <>
       <Header
-        text={date}
+        text={dayjs(date).format("YYYY년 MM월")}
         leftChild={
-          <Button text={<KeyboardArrowLeftRounded />} type="default" />
+          <Button
+            text={<KeyboardArrowLeftRounded />}
+            type="default"
+            onClick={onPrev}
+          />
         }
         rightChild={
-          <Button text={<KeyboardArrowRightRounded />} type="default" />
+          <Button
+            text={<KeyboardArrowRightRounded />}
+            type="default"
+            onClick={onNext}
+          />
         }
       />
-      <DiaryList />
+      <DiaryList yeayMonth={dayjs(date).format("YYYY년 MM월")} />
     </>
   );
 };
