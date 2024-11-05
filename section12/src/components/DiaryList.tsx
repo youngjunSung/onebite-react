@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
   const nav = useNavigate();
   const diaryList = useContext(DiaryStateContext);
+  console.log(diaryList)
   return (
     <div className="p-[12px]">
       <div className="flex items-center mb-[20px]">
@@ -32,10 +33,11 @@ const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
             return (
               <DiaryItem
                 key={diaryItem.id}
-                id={diaryItem.id}
-                createdDate={diaryItem.createdDate}
-                emotionId={diaryItem.emotionId}
-                content={diaryItem.content}
+                // id={diaryItem.id}
+                // createdDate={diaryItem.createdDate}
+                // emotionId={diaryItem.emotionId}
+                // content={diaryItem.content}
+                {...diaryItem}
               />
             );
           })}
