@@ -8,11 +8,13 @@ import dayjs from "dayjs";
 const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
   const nav = useNavigate();
   const diaryList = useContext(DiaryStateContext);
-  console.log(diaryList)
+  console.dir(diaryList)
+  console.log(dayjs("2024-11-07").valueOf())
+  const sortedDiaryList = diaryList?.sort((a, b) => Number(new Date(b.createdDate)) - Number(new Date(a.createdDate)) )
   return (
     <div className="p-[12px]">
       <div className="flex items-center mb-[20px]">
-        <select className="h-[38px] pr-[10px] text-[12px]">
+        <select className="h-[38px] pr-[10px] text-[14px] font-[500]">
           <option value="latest">최신순</option>
           <option value="oldest">오래된 순</option>
         </select>
@@ -24,7 +26,7 @@ const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
         />
       </div>
       <ul>
-        {diaryList
+        {sortedDiaryList
           ?.filter(
             (diaryItem) =>
               dayjs(diaryItem.createdDate).format("YYYY년 MM월") === yeayMonth
