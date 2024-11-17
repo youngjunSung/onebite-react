@@ -37,7 +37,7 @@ const Edit = () => {
   };
   const onRemove = () => {
     onDelete(Number(edit))
-    nav("/");
+    nav("/", { replace: true });
   }
   useEffect(() => {
     setDate(dayjs().format("YYYY-MM-DD"));

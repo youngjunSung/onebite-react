@@ -20,7 +20,7 @@ const New = () => {
   const refInputDate = useRef<HTMLInputElement>(null);
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
-    if (refInputDate.current) refInputDate.current.value = e.target.value;
+    // if (refInputDate.current) refInputDate.current.value = e.target.value;
   };
   const onChangeRadio = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmoId(Number(e.target.value));
