@@ -36,12 +36,16 @@ type Action =
 function reducer(diaryList: DiaryType[], action: Action) {
   switch (action.type) {
     case "CREATE":
+      localStorage.setItem(String(action.data.id), JSON.stringify(action.data));
       return [...diaryList, action.data];
     case "MODIFY":
+      localStorage.removeItem(String(action.data.id));
+      localStorage.setItem(String(action.data.id), JSON.stringify(action.data));
       return diaryList.map((diary) =>
         diary.id === action.data.id ? action.data : diary
       );
     case "DELETE":
+      localStorage.removeItem(String(action.id));
       return diaryList.filter((diary) => diary.id !== action.id);
     default:
       return diaryList;
@@ -95,7 +99,7 @@ function App() {
 
   return (
     <div className="max-w-[600px] w-full mx-auto bg-white flex-1 shadow-[0px_0px_20px_#64646433]">
-      <DiaryStateContext.Provider value={diaryList}>
+      <DiaryStateContext.Provider value={Object.values(localStorage).map( e => JSON.parse(e))}>
         <DiaryDispatchContext.Provider value={{ onCreate, onModify, onDelete }}>
           <Routes>
             {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}
