@@ -1,4 +1,4 @@
-import { useState, useReducer, useRef, createContext } from "react";
+import { useState, useReducer, useRef, createContext, useEffect } from "react";
 import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
@@ -11,6 +11,10 @@ import { getEmotions } from "./utils/getEmotions";
 import { DiaryType, DiaryDispatchContextType } from "./typing/types";
 
 type Action =
+  | {
+      type: "INIT";
+      data: DiaryType[];
+    }
   | {
       type: "CREATE";
       data: {
@@ -34,29 +38,50 @@ type Action =
       id: number;
     };
 function reducer(diaryList: DiaryType[], action: Action) {
+  let nextState;
   switch (action.type) {
+    case "INIT":
+      return action.data;
     case "CREATE":
-      localStorage.setItem(String(action.data.id), JSON.stringify(action.data));
-      return [...diaryList, action.data];
+      nextState = [...diaryList, action.data];
+      break;
     case "MODIFY":
-      localStorage.removeItem(String(action.data.id));
-      localStorage.setItem(String(action.data.id), JSON.stringify(action.data));
-      return diaryList.map((diary) =>
+      nextState = diaryList.map((diary) =>
         diary.id === action.data.id ? action.data : diary
       );
+      break;
     case "DELETE":
-      localStorage.removeItem(String(action.id));
-      return diaryList.filter((diary) => diary.id !== action.id);
+      nextState = diaryList.filter((diary) => diary.id !== action.id);
+      break;
     default:
-      return diaryList;
+      nextState = diaryList;
+      break;
   }
+  localStorage.setItem("diaryList", JSON.stringify(nextState));
+  return nextState;
 }
 export const DiaryStateContext = createContext<DiaryType[] | null>(null);
 export const DiaryDispatchContext =
   createContext<DiaryDispatchContextType | null>(null);
 function App() {
   const [diaryList, dispatch] = useReducer(reducer, []);
-  const refId = useRef(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const refId = useRef(0);
+  useEffect(() => {
+    const storedData = localStorage.getItem("diaryList");
+    if (!storedData) {
+      setIsLoading(false);
+      return;
+    }
+    const parsedData: DiaryType[] = JSON.parse(storedData);
+    dispatch({
+      type: "INIT",
+      data: parsedData,
+    });
+    refId.current =
+      Math.max(...parsedData.map((diary) => Number(diary.id))) + 1;
+    setIsLoading(false);
+  }, []);
 
   const onCreate = (
     createdDate: string,
@@ -89,7 +114,6 @@ function App() {
       },
     });
   };
-
   const onDelete = (id: number) => {
     dispatch({
       type: "DELETE",
@@ -97,9 +121,13 @@ function App() {
     });
   };
 
+  if (isLoading) {
+    return <div>로딩 중..</div>;
+  }
+
   return (
     <div className="max-w-[600px] w-full mx-auto bg-white flex-1 shadow-[0px_0px_20px_#64646433]">
-      <DiaryStateContext.Provider value={Object.values(localStorage).map( e => JSON.parse(e))}>
+      <DiaryStateContext.Provider value={diaryList}>
         <DiaryDispatchContext.Provider value={{ onCreate, onModify, onDelete }}>
           <Routes>
             {/* switch문처럼 렌더링 된다. url이 / 면 Home, /new면 New  */}

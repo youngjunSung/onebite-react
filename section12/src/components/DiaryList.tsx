@@ -10,15 +10,11 @@ const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
   const nav = useNavigate();
   const diaryList = useContext(DiaryStateContext);
   const [isLatest, setIsLatest] = useState<boolean>(true);
-  const sortedDiaryList = isLatest
-    ? diaryList?.sort(
-        (a, b) =>
-          Number(new Date(b.createdDate)) - Number(new Date(a.createdDate))
-      )
-    : diaryList?.sort(
-        (a, b) =>
-          Number(new Date(a.createdDate)) - Number(new Date(b.createdDate))
-      );
+  const sortedDiaryList = diaryList?.sort((a, b) =>
+    isLatest
+      ? Number(new Date(b.createdDate)) - Number(new Date(a.createdDate))
+      : Number(new Date(a.createdDate)) - Number(new Date(b.createdDate))
+  );
   const onChangeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === "latest") {
       setIsLatest(true);
@@ -30,7 +26,7 @@ const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
     <div className="p-[12px]">
       <div className="flex items-center mb-[20px]">
         <select
-          className="h-[38px] pr-[10px] text-[14px] font-[500]"
+          className="h-[38px] pr-[10px] text-[14px] font-[500] bg-transparent"
           onChange={onChangeSort}
         >
           <option value="latest">최신순</option>

@@ -12,7 +12,6 @@ const Diary = () => {
   const { diary } = useParams();
   const diaryList = useContext(DiaryStateContext);
   const getEditDiary = diaryList?.filter((e) => e.id === Number(diary))[0];
-  console.dir(getEditDiary);
   const { id, createdDate, emotionId, content } = getEditDiary as DiaryType;
   const getEmotionBg = (emotionId: number) => {
     switch (emotionId) {
