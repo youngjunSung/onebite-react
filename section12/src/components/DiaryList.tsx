@@ -1,10 +1,9 @@
 import Button from "../components/Button";
 import DiaryItem from "./DiaryItem";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { DiaryStateContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
-import { DiaryType } from "../typing/types";
 
 const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
   const nav = useNavigate();

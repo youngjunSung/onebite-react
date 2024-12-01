@@ -1,7 +1,6 @@
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import DiaryList from "../components/DiaryList";
 import {
   KeyboardArrowLeftRounded,
@@ -10,7 +9,6 @@ import {
 import dayjs from "dayjs";
 
 const Home = () => {
-  const nav = useNavigate();
   const [date, setDate] = useState<string>("");
   const onPrev = () => {
     setDate(dayjs(date).subtract(1, "month").format());

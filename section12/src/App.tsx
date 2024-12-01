@@ -1,13 +1,10 @@
 import { useState, useReducer, useRef, createContext, useEffect } from "react";
-import { Route, Routes, Link, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import New from "./pages/New";
 import Diary from "./pages/Diary";
 import Edit from "./pages/Edit";
 import Notfound from "./pages/Notfound";
-import Button from "./components/Button";
-import Header from "./components/Header";
-import { getEmotions } from "./utils/getEmotions";
 import { DiaryType, DiaryDispatchContextType } from "./typing/types";
 
 type Action =

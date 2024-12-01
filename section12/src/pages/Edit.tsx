@@ -1,15 +1,14 @@
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { getEmotions } from "../utils/getEmotions";
 import { KeyboardBackspace } from "@mui/icons-material";
 import { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { DiaryDispatchContextType } from "../typing/types";
 import { DiaryDispatchContext } from "../App";
 import { DiaryStateContext } from "../App";
-import { DiaryType } from "../typing/types";
 import dayjs from "dayjs";
 import EmotionRadio from "../components/EmotionRadio";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const Edit = () => {
   const { edit } = useParams();
@@ -19,6 +18,7 @@ const Edit = () => {
   const { onModify, onDelete } = useContext(
     DiaryDispatchContext
   ) as DiaryDispatchContextType;
+  usePageTitle(`${edit}번 다이어리 수정`);
   const [date, setDate] = useState<string>("");
   const [emoId, setEmoId] = useState<number>(0);
   const [content, setContent] = useState<string>("");

@@ -4,7 +4,7 @@ import { DiaryType } from "../typing/types";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-type DiaryItemType = Omit<DiaryType, "id">;
+// type DiaryItemType = Omit<DiaryType, "id">;
 
 const DiaryItem = ({ id, createdDate, emotionId, content }: DiaryType) => {
   const nav = useNavigate();

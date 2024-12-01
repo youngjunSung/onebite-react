@@ -1,13 +1,13 @@
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { getEmotions } from "../utils/getEmotions";
 import { KeyboardBackspace } from "@mui/icons-material";
-import { useState, useContext, useEffect, useRef, useMemo, memo } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { DiaryDispatchContextType } from "../typing/types";
 import { DiaryDispatchContext } from "../App";
 import EmotionRadio from "../components/EmotionRadio";
 import dayjs from "dayjs";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const New = () => {
   const nav = useNavigate();
@@ -17,6 +17,7 @@ const New = () => {
   const [date, setDate] = useState<string>("");
   const [emoId, setEmoId] = useState<number>(0);
   const [content, setContent] = useState<string>("");
+  usePageTitle(`새 다이어리`);
   const refInputDate = useRef<HTMLInputElement>(null);
   const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);

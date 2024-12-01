@@ -1,11 +1,12 @@
 import Header from "../components/Header";
 import Button from "../components/Button";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DiaryStateContext } from "../App";
 import { getEmotions } from "../utils/getEmotions";
 import { DiaryType } from "../typing/types";
 import { KeyboardBackspace } from "@mui/icons-material";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const Diary = () => {
   const nav = useNavigate();
@@ -13,6 +14,7 @@ const Diary = () => {
   const diaryList = useContext(DiaryStateContext);
   const getEditDiary = diaryList?.filter((e) => e.id === Number(diary))[0];
   const { id, createdDate, emotionId, content } = getEditDiary as DiaryType;
+  usePageTitle(`${diary}번 다이어리 상세`);
   const getEmotionBg = (emotionId: number) => {
     switch (emotionId) {
       case 1:
