@@ -26,7 +26,7 @@ const DiaryItem = ({ id, createdDate, emotionId, content }: DiaryType) => {
   };
   return (
     <li className="flex items-start mb-[10px] last:mb-0">
-      <Link to={`/diary/${id}`} className="flex flex-1">
+      <Link to={`/diary/${id}`} className="flex flex-1 min-w-0">
         <div
           className={`${getEmotionBg(
             emotionId
