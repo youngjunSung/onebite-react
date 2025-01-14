@@ -1,4 +1,4 @@
-import { forwardRef, ForwardedRef } from "react"
+import { forwardRef } from "react"
 
 type ChildProps = {
   title: string;
