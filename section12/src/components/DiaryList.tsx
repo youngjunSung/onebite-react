@@ -1,12 +1,13 @@
 import Button from "../components/Button";
 import DiaryItem from "./DiaryItem";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, MutableRefObject, useEffect } from "react";
 import { DiaryStateContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
 const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
   const nav = useNavigate();
+  const refItems = useRef<HTMLLIElement[]>([]);
   const diaryList = useContext(DiaryStateContext);
   const [isLatest, setIsLatest] = useState<boolean>(true);
   const sortedDiaryList = diaryList?.sort((a, b) =>
@@ -21,6 +22,10 @@ const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
       setIsLatest(false);
     }
   };
+  // useEffect(() => {
+  //   console.log(refItems.current);
+  // }, [refItems])
+  // console.log('effect')
   return (
     <div className="p-[12px]">
       <div className="flex items-center mb-[20px]">
@@ -44,10 +49,13 @@ const DiaryList = ({ yeayMonth }: { yeayMonth: string }) => {
             (diaryItem) =>
               dayjs(diaryItem.createdDate).format("YYYY년 MM월") === yeayMonth
           )
-          .map((diaryItem) => {
+          .map((diaryItem, idx) => {
             return (
               <DiaryItem
                 key={diaryItem.id}
+                ref={(el) => {
+                  if (el) refItems.current[idx] = el;
+                }}
                 // id={diaryItem.id}
                 // createdDate={diaryItem.createdDate}
                 // emotionId={diaryItem.emotionId}

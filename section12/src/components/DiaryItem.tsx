@@ -3,10 +3,11 @@ import { getEmotions } from "../utils/getEmotions";
 import { DiaryType } from "../typing/types";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { forwardRef, ForwardedRef, MutableRefObject } from "react";
 
 // type DiaryItemType = Omit<DiaryType, "id">;
 
-const DiaryItem = ({ id, createdDate, emotionId, content }: DiaryType) => {
+const DiaryItem = forwardRef<HTMLLIElement, DiaryType>(({ id, createdDate, emotionId, content }: DiaryType, ref) => {
   const nav = useNavigate();
   const getEmotionBg = (emotionId: number) => {
     switch (emotionId) {
@@ -25,7 +26,7 @@ const DiaryItem = ({ id, createdDate, emotionId, content }: DiaryType) => {
     }
   };
   return (
-    <li className="flex items-start mb-[10px] last:mb-0">
+    <li ref={ref} className="flex items-start mb-[10px] last:mb-0">
       <Link to={`/diary/${id}`} className="flex flex-1 min-w-0">
         <div
           className={`${getEmotionBg(
@@ -50,6 +51,6 @@ const DiaryItem = ({ id, createdDate, emotionId, content }: DiaryType) => {
       />
     </li>
   );
-};
+});
 
 export default DiaryItem;

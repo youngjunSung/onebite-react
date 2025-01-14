@@ -1,44 +1,16 @@
-import Header from "../components/Header";
-import Button from "../components/Button";
-import { useState, useEffect } from "react";
-import DiaryList from "../components/DiaryList";
-import {
-  KeyboardArrowLeftRounded,
-  KeyboardArrowRightRounded,
-} from "@mui/icons-material";
-import dayjs from "dayjs";
+import {  useEffect, useRef, ForwardedRef } from "react";
+import Child from "../components/Child";
+
+const data = ["aaa", "bbb", "ccc"];
 
 const Home = () => {
-  const [date, setDate] = useState<string>("");
-  const onPrev = () => {
-    setDate(dayjs(date).subtract(1, "month").format());
-  };
-  const onNext = () => {
-    setDate(dayjs(date).add(1, "month").format());
-  };
+  const refDiv = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    setDate(dayjs().format());
-  }, []);
+    console.log(refDiv)
+  })
   return (
     <>
-      <Header
-        text={dayjs(date).format("YYYY년 MM월")}
-        leftChild={
-          <Button
-            text={<KeyboardArrowLeftRounded />}
-            type="default"
-            onClick={onPrev}
-          />
-        }
-        rightChild={
-          <Button
-            text={<KeyboardArrowRightRounded />}
-            type="default"
-            onClick={onNext}
-          />
-        }
-      />
-      <DiaryList yeayMonth={dayjs(date).format("YYYY년 MM월")} />
+      <Child ref={refDiv} title={"child compoentttt"} />
     </>
   );
 };
