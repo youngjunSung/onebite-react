@@ -39,18 +39,29 @@ const Home = () => {
   };
   const handlePickItem = (idx: number) => {
     const isSelected = refButtons.current[idx].ariaSelected === "true";
-    // if (getPickedItemLength() >= 3 && isSelected) return;
+    if (getPickedItemLength() >= 3 && !isSelected) {
+      return;
+    } else if (isSelected) {
+      setPickedItems((prev) => {
+        const newArr = [...prev];
+        return newArr.map((e) => {
+          if (e.name === items[idx].name) {
+            return { name: "", price: 0 };
+          } else {
+            return e;
+          }
+        });
+      });
+      refButtons.current[idx].ariaSelected = String(!isSelected);
+      return;
+    }
     refButtons.current[idx].ariaSelected = String(!isSelected);
-    const pickedArr = refButtons.current.filter(
-      (e) => e.ariaSelected === "true"
-    );
     setPickedItems((prev) => {
       const newArr = [...prev];
-      newArr[pickedArr.length - 1] = items[idx];
-      return [...newArr];
+      newArr[newArr.findIndex((e) => e.name === "")] = items[idx];
+      return newArr;
     });
   };
-  console.log(refButtons);
   return (
     <>
       <Header
@@ -75,13 +86,19 @@ const Home = () => {
           {pickedItems.map((item, idx) => {
             if (!item.name) {
               return (
-                <div key={idx} className="flex flex-col min-h-[50px] items-center">
+                <div
+                  key={idx}
+                  className="flex flex-col min-h-[50px] items-center"
+                >
                   Empty
                 </div>
               );
             } else {
               return (
-                <div key={idx} className="flex flex-col min-h-[50px] items-center">
+                <div
+                  key={idx}
+                  className="flex flex-col min-h-[50px] items-center"
+                >
                   <b className="font-bold">{item.name}</b>
                   {item.price}
                 </div>
